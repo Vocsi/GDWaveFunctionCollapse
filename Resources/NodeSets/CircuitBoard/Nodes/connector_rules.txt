@@ -1,0 +1,6 @@
+[ North, East, South, West ]
+
+Dark Green: 1
+Dark Gray: 2
+Light Green: 3
+Light Gray: 4

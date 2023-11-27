@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=16 format=3 uid="uid://b4aqfhl3il06h"]
+
+[ext_resource type="Script" path="res://Scripts/Nodes/SuperPosition.cs" id="1_30c42"]
+[ext_resource type="Resource" uid="uid://dr1x7rdwq7ltc" path="res://Resources/NodeSets/CircuitBoard/Nodes/bridge.tres" id="1_p68tn"]
+[ext_resource type="Resource" uid="uid://crraboqcbg2o1" path="res://Resources/NodeSets/CircuitBoard/Nodes/component.tres" id="2_6v4uo"]
+[ext_resource type="Resource" uid="uid://cug8qtsjt5n5v" path="res://Resources/NodeSets/CircuitBoard/Nodes/connection.tres" id="3_24804"]
+[ext_resource type="Resource" uid="uid://b01tvx7pe2f8h" path="res://Resources/NodeSets/CircuitBoard/Nodes/corner.tres" id="4_uqbnb"]
+[ext_resource type="Resource" uid="uid://cmg6w2p41kfvv" path="res://Resources/NodeSets/CircuitBoard/Nodes/dskew.tres" id="5_jm7py"]
+[ext_resource type="Resource" uid="uid://dybqu18baulaw" path="res://Resources/NodeSets/CircuitBoard/Nodes/skew.tres" id="6_l32uv"]
+[ext_resource type="Resource" uid="uid://bog56fkfss7pb" path="res://Resources/NodeSets/CircuitBoard/Nodes/substrate.tres" id="7_pch3w"]
+[ext_resource type="Resource" uid="uid://bks0btse7keiw" path="res://Resources/NodeSets/CircuitBoard/Nodes/t.tres" id="8_i7j3i"]
+[ext_resource type="Resource" uid="uid://b8y2f24p0qh5h" path="res://Resources/NodeSets/CircuitBoard/Nodes/track.tres" id="9_iooa8"]
+[ext_resource type="Resource" uid="uid://bkvg5j5bac1jw" path="res://Resources/NodeSets/CircuitBoard/Nodes/transition.tres" id="10_3jej6"]
+[ext_resource type="Resource" uid="uid://dvvhwfy8akqfq" path="res://Resources/NodeSets/CircuitBoard/Nodes/turn.tres" id="11_vsff3"]
+[ext_resource type="Resource" uid="uid://diy3m2fk0ifkx" path="res://Resources/NodeSets/CircuitBoard/Nodes/viad.tres" id="12_mwltv"]
+[ext_resource type="Resource" uid="uid://c44fqidlad5vn" path="res://Resources/NodeSets/CircuitBoard/Nodes/vias.tres" id="13_4dyy8"]
+[ext_resource type="Resource" uid="uid://kcy56lpv4yln" path="res://Resources/NodeSets/CircuitBoard/Nodes/wire.tres" id="14_n275l"]
+
+[resource]
+script = ExtResource("1_30c42")
+StartingSet = Array[Resource]([ExtResource("1_p68tn"), ExtResource("2_6v4uo"), ExtResource("3_24804"), ExtResource("4_uqbnb"), ExtResource("5_jm7py"), ExtResource("6_l32uv"), ExtResource("7_pch3w"), ExtResource("8_i7j3i"), ExtResource("9_iooa8"), ExtResource("10_3jej6"), ExtResource("11_vsff3"), ExtResource("12_mwltv"), ExtResource("13_4dyy8"), ExtResource("14_n275l")])
+Collapsed = false

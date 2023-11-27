@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://c44fqidlad5vn"]
+
+[ext_resource type="Texture2D" uid="uid://b4aoqvmtotmv1" path="res://Resources/NodeSets/CircuitBoard/Nodes/Sprites/vias.png" id="1_eulwq"]
+[ext_resource type="Script" path="res://Scripts/Nodes/WFCNode.cs" id="2_7oh2l"]
+
+[resource]
+script = ExtResource("2_7oh2l")
+Sprite = ExtResource("1_eulwq")
+Connectors = PackedStringArray("131", "111", "111", "111")
