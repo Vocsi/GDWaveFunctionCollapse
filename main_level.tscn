@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf1dgwivbxare"]
+[gd_scene load_steps=4 format=3 uid="uid://bf1dgwivbxare"]
 
 [ext_resource type="Script" path="res://Scripts/Solver/WaveFunctionSolver.cs" id="1_t2dvm"]
 [ext_resource type="Resource" uid="uid://b4aqfhl3il06h" path="res://Resources/NodeSets/CircuitBoard/super_pos.tres" id="2_ygxgy"]
+[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="3_jc8r1"]
 
 [node name="MainLevel" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [-683.0]
 
 [node name="Solver" type="Node2D" parent="."]
 scale = Vector2(0.955137, 1)
@@ -13,3 +15,4 @@ GridSize = Vector2i(100, 100)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)
+script = ExtResource("3_jc8r1")

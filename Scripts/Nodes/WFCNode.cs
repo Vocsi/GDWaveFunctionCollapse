@@ -14,6 +14,15 @@ namespace WaveFunctionCollapse.Scripts.Nodes
         public float Rotation { get; set; }
 
         public WFCNode() : this( null, new string[] { "", "", "", "" }, 0 ) {}
+
+        public WFCNode( WFCNode other )
+        {
+            Sprite = other.Sprite;
+            Connectors = new[] { "", "", "", "" };
+            for ( int i = 0; i < 4; i++ )
+                Connectors[ i ] = other.Connectors[ i ];
+            Rotation = other.Rotation;
+        }
         
         public WFCNode( Texture2D sprite, string[] connectors, float rotation )
         {
