@@ -16,8 +16,11 @@ namespace WaveFunctionCollapse.Scripts.Solver
 		[ Export ]
 		public Vector2I GridSize;
 		
-		private SuperPosition[,] Grid;
-
+		[ Export ]
+		public Vector2I NodeSize;
+		
+		private SuperPosition[] Grid;
+		
 		private int CollapsedNodes;
 
 		private RandomNumberGenerator RngGen;
@@ -40,21 +43,10 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			if ( Seed == 0 )
 				Seed = RngGen.Randi();
 			RngGen.Seed = Seed;
-
-			Grid = new SuperPosition[ GridSize.X, GridSize.Y ];
-			for ( var x = 0; x < GridSize.X; x++ )
-			{
-				for ( var y = 0; y < GridSize.Y; y++ )
-				{
-					SuperPosition superPos = new SuperPosition();
-					
-					superPos.StartingSet = NodeSet.StartingSet;
-					superPos.GenerateRotations();
-					superPos.Collapsed = false;
-					
-					Grid[ x, y ] = superPos;
-				}
-			}
+			
+			Grid = new SuperPosition[ GridSize.X * GridSize.Y ];
+			for ( int i = 0; i < Grid.Length; i++ )
+				Grid[ i ] = new SuperPosition( NodeSet.StartingSet ); 
 			
 			CanGenerate = true;
 		}
@@ -99,14 +91,11 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			ulong startTime = Time.GetTicksMsec();
 			do
 			{
-				Vector2I cheapestNode = FindLowestEntropy();
-				if ( cheapestNode.X == -1 )
-				{
-					GD.PrintErr( "All nodes were already collapsed" );
+				int cheapestNode = FindLowestEntropy();
+				if ( cheapestNode == -1 )
 					break;
-				}
 
-				if ( Collapse( cheapestNode.X, cheapestNode.Y ) ) 
+				if ( Collapse( cheapestNode ) )
 					continue;
 				
 				GD.PrintErr( "Could not collapse node" );
@@ -119,44 +108,36 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			CallDeferred( "ResetIsGenerating" );
 		}
 
-		private Vector2I FindLowestEntropy()
+		private int FindLowestEntropy()
 		{
-			( int, int, int ) cheapestNode = ( int.MaxValue, -1, -1 );
-			for ( int x = 0; x < GridSize.X; x++ )
-			{
-				for ( int y = 0; y < GridSize.Y; y++ )
-				{
-					if ( Grid[ x, y ].Collapsed )
-						continue;
-
-					if ( cheapestNode.Item1 >= Grid[ x, y ].StartingSet.Length )
-						cheapestNode = ( Grid[ x, y ].StartingSet.Length, x, y );
-				}
-			}
-			
-			return new Vector2I( cheapestNode.Item2, cheapestNode.Item3 );
+			( int, int ) cheapestNode = ( int.MaxValue, -1 );
+			for ( int i = 0; i < Grid.Length; i++ )
+				if ( !Grid[ i ].Collapsed )
+					if ( cheapestNode.Item1 > Grid[ i ].StartingSet.Length )
+						cheapestNode = ( Grid[ i ].StartingSet.Length, i );
+			return cheapestNode.Item2;
 		}
 
-		private bool Collapse( int x, int y )
+		private bool Collapse( int index )
 		{
-			SuperPosition superPosition = Grid[ x, y ];
-			if ( superPosition.Collapsed || superPosition.Entropy.Count <= 0 )
+			SuperPosition superPosition = Grid[ index ];
+			if ( superPosition.Collapsed || superPosition.Entropy.Count == 0 )
 				return false;
 			
-			int index = RngGen.RandiRange( 0, superPosition.Entropy.Count - 1 );
-			superPosition.Entropy = new List< WFCNode >() { superPosition.Entropy[ index ] };
+			int randIndex = RngGen.RandiRange( 0, superPosition.Entropy.Count - 1 );
+			superPosition.Entropy = new List< WFCNode >() { superPosition.Entropy[ randIndex ] };
 			superPosition.Collapsed = true;
 
 			CollapsedNodes += 1;
+
+			CallDeferred("SpawnSprite", IndexToPosition( index, GridSize.X ), superPosition.Entropy[ 0 ] );
 			
-			CallDeferred( "SpawnSprite", new Vector2(x * 14, y * 14 ), superPosition.Entropy[ 0 ] );
-			
-			Propagate( x, y );
+			Propagate( index );
 			
 			return true;
 		}
 
-		public void SpawnSprite( Vector2 position, WFCNode node )
+		private void SpawnSprite( Vector2 position, WFCNode node )
 		{
 			NodeInstance nodeInstance = new NodeInstance();
 			nodeInstance.Texture = node.Sprite;
@@ -166,71 +147,46 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			nodeInstance.Visible = true;
 			AddChild( nodeInstance );
 		}
-		
-		private void Propagate( int x, int y )
+
+		private Vector2 IndexToPosition( int index, int width )
 		{
-			SuperPosition collapsedNode = Grid[ x, y ];
-			for ( int i = -1; i <= 1; i++ )
-			{
-				for ( int j = -1; j <= 1; j++ )
-				{
-					if ( x + i >= GridSize.X || x + i < 0 || y + j >= GridSize.Y || y + j < 0 || Mathf.Abs( i ) == Mathf.Abs( j ) )
-						continue;
-						
-					if ( CheckAdjacent( collapsedNode, Grid[ x + i, y + j ], i, j, x, y ) )
-						Propagate( x + i, y + j );
-				}
-			}
-			
+			return new Vector2( ( index % width ) * NodeSize.X, Mathf.FloorToInt( index / width ) * NodeSize.Y );
 		}
 
-		private bool CheckAdjacent( SuperPosition current, SuperPosition adjacent, int x, int y, int gridOriginX, int gridOriginY )
+		private void Propagate( int index )
 		{
+			int leftIndex = index - 1;
+			int rightIndex = index + 1;
+			int aboveIndex = index - GridSize.X;
+			int underIndex = index + GridSize.X;
+
+			if ( leftIndex >= 0 && leftIndex % GridSize.X != GridSize.X - 1 )
+				CheckAdjacent( index, leftIndex, 3, 1 );
+			if ( rightIndex <= Grid.Length - 1 && rightIndex % GridSize.X != 0 )
+				CheckAdjacent( index, rightIndex, 1, 3 );
+			if ( aboveIndex >= 0 )
+				CheckAdjacent( index, aboveIndex, 0, 2 );
+			if ( underIndex < Grid.Length )
+				CheckAdjacent( index, underIndex, 2, 0 );
+		}
+
+		private void CheckAdjacent( int currentIndex, int adjacentIndex, int currentCheck, int adjacentCheck )
+		{
+			SuperPosition current = Grid[ currentIndex ];
+			SuperPosition adjacent = Grid[ adjacentIndex ]; 
 			if ( adjacent.Collapsed )
-				return false;
+				return;
 
-			int check = 0;
-			int refCheck = 0;
-			if (x == -1)
-			{
-				check = 1;
-				refCheck = 3;
-			}
-			else if (x == 1)
-			{
-				check = 3;
-				refCheck = 1;
-			}
-			else if ( y == -1 )
-			{
-				check = 2;
-				refCheck = 0;
-			}
-			else if (y == 1)
-			{
-				check = 0;
-				refCheck = 2;
-			}
-
-			//for ( int i = adjacent.Entropy.Count - 1; i >= 0; i-- )
-			//	if (current.Entropy[0].Connectors[refCheck] != adjacent.Entropy[i].GetReversedConnector(check))
-			//		adjacent.Entropy.RemoveAt( i );
-			//
-			//if ( adjacent.Entropy.Count <= 0 )
-			//	return true;
-			//return false;
-			
 			bool altered = false;
 			for ( int i = adjacent.Entropy.Count - 1; i >= 0; i-- )
 			{
 				bool matchFound = false;
 				foreach ( var node in current.Entropy )
 				{
-					if ( node.Connectors[ refCheck ] == adjacent.Entropy[ i ].GetReversedConnector( check ) )
-					{
-						matchFound = true;
-						break;
-					}
+					if ( node.Connectors[ currentCheck ] != adjacent.Entropy[ i ].GetReversedConnector( adjacentCheck ) )
+						continue;
+					matchFound = true;
+					break;
 				}
 			
 				if ( matchFound )
@@ -239,8 +195,14 @@ namespace WaveFunctionCollapse.Scripts.Solver
 				adjacent.Entropy.RemoveAt( i );
 				altered = true;
 			}
-			
-			return altered;
+
+			if ( altered )
+			{
+				if ( adjacent.Entropy.Count == 1 )
+					Collapse( adjacentIndex );
+				else
+					Propagate( adjacentIndex );
+			}
 		}
 	}
 }

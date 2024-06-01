@@ -13,6 +13,14 @@ namespace WaveFunctionCollapse.Scripts.Nodes
         [ Export ] 
         public bool Collapsed { get; set; }
         
+        public SuperPosition() {}
+        public SuperPosition( WFCNode[] startingSet )
+        {
+            StartingSet = startingSet;
+            GenerateRotations();
+            Collapsed = false; 
+        }
+        
         public void GenerateRotations()
         {
             if ( StartingSet == null )
@@ -28,18 +36,6 @@ namespace WaveFunctionCollapse.Scripts.Nodes
                     Entropy.Add( newNode );
                 }
             }
-
-            //int originalLength = StartingSet.Length;
-            //for ( int i = 0; i < originalLength; i++ )
-            //{
-            //    for ( int j = 0; j < 4; j++ )
-            //    {
-            //        WFCNode newNode = StartingSet[ i ];
-            //        RoatateConnectors( newNode, StartingSet[ i ], j );
-            //        newNode.Rotation = j * 90;
-            //        Entropy.Add( newNode );
-            //    }
-            //}
         }
 
         private void RoatateConnectors( WFCNode rotating, WFCNode original, int times )

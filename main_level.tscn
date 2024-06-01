@@ -11,7 +11,8 @@ metadata/_edit_horizontal_guides_ = [-683.0]
 scale = Vector2(0.955137, 1)
 script = ExtResource("1_t2dvm")
 NodeSet = ExtResource("2_ygxgy")
-GridSize = Vector2i(100, 100)
+GridSize = Vector2i(100, 50)
+NodeSize = Vector2i(14, 14)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)
