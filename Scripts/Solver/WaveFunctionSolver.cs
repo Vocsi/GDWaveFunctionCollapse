@@ -104,7 +104,7 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			} while ( CollapsedNodes < Grid.Length );
 
 			ulong elapsedTime = Time.GetTicksMsec() - startTime;
-			GD.Print( $"Completed in: { elapsedTime } ms" );
+			GD.Print( $"Completed in: { elapsedTime / 1000.0 } s" );
 			CallDeferred( "ResetIsGenerating" );
 		}
 
@@ -113,8 +113,8 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			( int, int ) cheapestNode = ( int.MaxValue, -1 );
 			for ( int i = 0; i < Grid.Length; i++ )
 				if ( !Grid[ i ].Collapsed )
-					if ( cheapestNode.Item1 > Grid[ i ].StartingSet.Length )
-						cheapestNode = ( Grid[ i ].StartingSet.Length, i );
+					if ( cheapestNode.Item1 > Grid[ i ].Entropy.Count )
+						cheapestNode = ( Grid[ i ].Entropy.Count, i );
 			return cheapestNode.Item2;
 		}
 
@@ -124,11 +124,10 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			if ( superPosition.Collapsed || superPosition.Entropy.Count == 0 )
 				return false;
 			
-			int randIndex = RngGen.RandiRange( 0, superPosition.Entropy.Count - 1 );
-			superPosition.Entropy = new List< WFCNode >() { superPosition.Entropy[ randIndex ] };
+			superPosition.Entropy = new List< WFCNode >() { superPosition.Entropy[ RngGen.RandiRange( 0, superPosition.Entropy.Count - 1 ) ] };
 			superPosition.Collapsed = true;
 
-			CollapsedNodes += 1;
+			CollapsedNodes++;
 
 			CallDeferred("SpawnSprite", IndexToPosition( index, GridSize.X ), superPosition.Entropy[ 0 ] );
 			
