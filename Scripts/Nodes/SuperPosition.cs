@@ -13,12 +13,16 @@ namespace WaveFunctionCollapse.Scripts.Nodes
         [ Export ] 
         public bool Collapsed { get; set; }
         
+        [ Export ]
+        public float NodeSize { get; set; }
+        
         public SuperPosition() {}
-        public SuperPosition( WFCNode[] startingSet )
+        public SuperPosition( WFCNode[] startingSet, float size )
         {
             StartingSet = startingSet;
             GenerateRotations();
-            Collapsed = false; 
+            Collapsed = false;
+            NodeSize = size;
         }
         
         public void GenerateRotations()

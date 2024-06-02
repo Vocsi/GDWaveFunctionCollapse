@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://c6nasi07dfnyn"]
+
+[ext_resource type="Resource" uid="uid://csb8cryn6we7u" path="res://Resources/NodeSets/FantasyRealm/Nodes/basic_grass.tres" id="1_rs5gn"]
+[ext_resource type="Resource" uid="uid://2mi51egk815q" path="res://Resources/NodeSets/FantasyRealm/Nodes/basic_water.tres" id="2_uujoq"]
+[ext_resource type="Resource" uid="uid://db2xbdb0vh4ex" path="res://Resources/NodeSets/FantasyRealm/Nodes/half_water_land.tres" id="3_cxm44"]
+[ext_resource type="Resource" uid="uid://btqkdhpt2wsye" path="res://Resources/NodeSets/FantasyRealm/Nodes/quater_land_with_water.tres" id="4_mgdb5"]
+[ext_resource type="Resource" uid="uid://1wnklykyf03r" path="res://Resources/NodeSets/FantasyRealm/Nodes/quater_water_with_land.tres" id="5_55l67"]
+[ext_resource type="Script" path="res://Scripts/Nodes/SuperPosition.cs" id="6_mu7nw"]
+
+[resource]
+script = ExtResource("6_mu7nw")
+StartingSet = Array[Resource]([ExtResource("1_rs5gn"), ExtResource("2_uujoq"), ExtResource("3_cxm44"), ExtResource("4_mgdb5"), ExtResource("5_55l67")])
+Collapsed = false
+NodeSize = 200.0

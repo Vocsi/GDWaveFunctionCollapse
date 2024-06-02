@@ -1,0 +1,4 @@
+[ North, East, South, West ]
+
+Grass: 1
+Water: 2

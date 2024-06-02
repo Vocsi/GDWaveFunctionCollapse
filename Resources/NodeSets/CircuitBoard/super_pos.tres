@@ -20,3 +20,4 @@
 script = ExtResource("1_30c42")
 StartingSet = Array[Resource]([ExtResource("1_p68tn"), ExtResource("2_6v4uo"), ExtResource("3_24804"), ExtResource("4_uqbnb"), ExtResource("5_jm7py"), ExtResource("6_l32uv"), ExtResource("7_pch3w"), ExtResource("8_i7j3i"), ExtResource("9_iooa8"), ExtResource("10_3jej6"), ExtResource("11_vsff3"), ExtResource("12_mwltv"), ExtResource("13_4dyy8"), ExtResource("14_n275l")])
 Collapsed = false
+NodeSize = 14.0

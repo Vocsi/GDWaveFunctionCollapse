@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://csb8cryn6we7u"]
+
+[ext_resource type="Texture2D" uid="uid://bvgm1fj587wgx" path="res://Resources/NodeSets/FantasyRealm/Nodes/Sprites/basic_grass.png" id="1_0xcnc"]
+[ext_resource type="Script" path="res://Scripts/Nodes/WFCNode.cs" id="2_0snly"]
+
+[resource]
+script = ExtResource("2_0snly")
+Sprite = ExtResource("1_0xcnc")
+Connectors = PackedStringArray("1111", "1111", "1111", "1111")

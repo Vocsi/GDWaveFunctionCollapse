@@ -16,9 +16,6 @@ namespace WaveFunctionCollapse.Scripts.Solver
 		[ Export ]
 		public Vector2I GridSize;
 		
-		[ Export ]
-		public Vector2I NodeSize;
-		
 		private SuperPosition[] Grid;
 		
 		private int CollapsedNodes;
@@ -46,7 +43,7 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			
 			Grid = new SuperPosition[ GridSize.X * GridSize.Y ];
 			for ( int i = 0; i < Grid.Length; i++ )
-				Grid[ i ] = new SuperPosition( NodeSet.StartingSet ); 
+				Grid[ i ] = new SuperPosition( NodeSet.StartingSet, NodeSet.NodeSize ); 
 			
 			CanGenerate = true;
 		}
@@ -129,7 +126,7 @@ namespace WaveFunctionCollapse.Scripts.Solver
 
 			CollapsedNodes++;
 
-			CallDeferred("SpawnSprite", IndexToPosition( index, GridSize.X ), superPosition.Entropy[ 0 ] );
+			CallDeferred("SpawnSprite", IndexToPosition( index, GridSize.X, superPosition.NodeSize ), superPosition.Entropy[ 0 ] );
 			
 			Propagate( index );
 			
@@ -147,9 +144,9 @@ namespace WaveFunctionCollapse.Scripts.Solver
 			AddChild( nodeInstance );
 		}
 
-		private Vector2 IndexToPosition( int index, int width )
+		private Vector2 IndexToPosition( int index, int width, float size )
 		{
-			return new Vector2( ( index % width ) * NodeSize.X, Mathf.FloorToInt( index / width ) * NodeSize.Y );
+			return new Vector2( ( index % width ) * size, Mathf.FloorToInt( index / width ) * size );
 		}
 
 		private void Propagate( int index )

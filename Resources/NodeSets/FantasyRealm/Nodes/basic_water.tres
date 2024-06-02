@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://2mi51egk815q"]
+
+[ext_resource type="Texture2D" uid="uid://bhpicaigdlp23" path="res://Resources/NodeSets/FantasyRealm/Nodes/Sprites/basic_water.png" id="1_cj1p5"]
+[ext_resource type="Script" path="res://Scripts/Nodes/WFCNode.cs" id="2_shfx8"]
+
+[resource]
+script = ExtResource("2_shfx8")
+Sprite = ExtResource("1_cj1p5")
+Connectors = PackedStringArray("2222", "2222", "2222", "2222")
